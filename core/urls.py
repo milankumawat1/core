@@ -16,10 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from home.views import home, about, contact
+from django.conf import settings
+from django.conf.urls.static import static
+from home.views import *
+from vege.views import *
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
+    path('recipies/', Recipies, name='recipies'),
     path('about/', about, name='about'),
     path('contact/', contact, name='contact'),
+    path('delete-recipie/<id>/', delete_recipie, name='delete-recipie'),
+    path('update-recipie/<id>/', update_recipie, name='update-recipie'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
