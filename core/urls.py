@@ -29,6 +29,9 @@ urlpatterns = [
     path('contact/', contact, name='contact'),
     path('delete-recipie/<id>/', delete_recipie, name='delete-recipie'),
     path('update-recipie/<id>/', update_recipie, name='update-recipie'),
+    path('login/', login_page, name='login'),
+    path('logout/', logout_page, name='logout'),
+    path('register/', register_page, name='register'),
 ]
 
 if settings.DEBUG:

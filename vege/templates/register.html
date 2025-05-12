@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row mb-4">
+            <div class="col-12">
+                <h1 class="text-center">Register Page</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card p-4 shadow-lg">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% if messages %}
+            <div class="alert alert-primary" role="alert">
+                {%for message in messages%}
+                {{message}}
+                {%endfor%}
+              </div>
+
+            {% endif %}
+
+                        <div class="mb-3">
+                            <label for="first_name" class="form-label fw-bold">First Name</label>
+                            <input type="text" class="form-control" name="first_name" id="first_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="last_name" class="form-label fw-bold">Last Name</label>
+                            <input type="text" class="form-control" name="last_name" id="last_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label fw-bold">Username</label>
+                            <input type="text" class="form-control" name="username" id="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-bold">Password</label>
+                            <input type="password" class="form-control" name="password" id="password" required>
+                        </div>
+                        <div class="text-center">
+                            <p class="mb-3">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+                            <button type="submit" class="btn btn-primary btn-lg px-5">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
