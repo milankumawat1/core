@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title text-primary mb-4">Student Report Card</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="mb-3"><span class="text-muted">Student Name:</span> {{marks.student.student_name}}</h4>
+                    <h4 class="mb-3"><span class="text-muted">Student ID:</span> {{marks.student.student_id}}</h4>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="mb-3"><span class="text-muted">Department:</span> {{marks.student.department.department}}</h4>
+                    <h4 class="mb-3"><span class="text-muted">Total Marks:</span> {{total_marks}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title text-primary mb-4">Subject-wise Marks</h3>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Marks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mark in marks %}
+                        <tr>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td>{{mark.subject.subject_name}}</td>
+                            <td>{{mark.marks}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
