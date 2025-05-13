@@ -7,12 +7,14 @@
             <h2 class="card-title text-primary mb-4">Student Report Card</h2>
             <div class="row">
                 <div class="col-md-6">
-                    <h4 class="mb-3"><span class="text-muted">Student Name:</span> {{marks.student.student_name}}</h4>
-                    <h4 class="mb-3"><span class="text-muted">Student ID:</span> {{marks.student.student_id}}</h4>
+                    <h4 class="mb-3"><span class="text-muted">Student Name:</span> {{student.student_name}}</h4>
+                    <h4 class="mb-3"><span class="text-muted">Student ID:</span> {{student.student_id.student_id}}</h4>                    <h4 class="mb-3"><span class="text-muted">Department:</span> {{student.department.department}}</h4>
+
                 </div>
                 <div class="col-md-6">
-                    <h4 class="mb-3"><span class="text-muted">Department:</span> {{marks.student.department.department}}</h4>
-                    <h4 class="mb-3"><span class="text-muted">Total Marks:</span> {{total_marks}}</h4>
+                    <h4 class="mb-3"><span class="text-muted">Total Marks:</span> {{total_marks.total_marks}}</h4>
+                    <h4 class="mb-3"><span class="text-muted">Current Rank:</span> {{current_rank}}</h4>
+                    <h4 class="mb-3"><span class="text-muted">Date of Report Card Generation:</span> {{date_of_report_card_generation}}</h4>
                 </div>
             </div>
         </div>
