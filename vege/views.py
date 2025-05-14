@@ -5,8 +5,43 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login ,logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-
+from home.utils import send_email_to_client
+from django.db.models import Q, Sum
 # Create your views here.
+
+def send_email(request):
+    # Get student_id from the URL parameters
+    student_id = request.GET.get('student_id')
+    
+    # Get the student's marks and details
+    queryset = SubjectMarks.objects.filter(student__student_id__student_id=student_id)
+    
+    total_marks = queryset.aggregate(total_marks=Sum('marks'))
+    current_rank = queryset.first().student.studentreportcard.first().student_rank
+    date_of_report_card_generation = queryset.first().student.studentreportcard.first().date_of_report_card_generation
+    student = queryset.first().student
+    
+    try:
+        send_email_to_client(
+            student=student,
+            marks=queryset,
+            total_marks=total_marks,
+            current_rank=current_rank
+        )
+        messages.success(request, 'Report card has been sent to the student\'s email')
+    except Exception as e:
+        messages.error(request, f'Failed to send email: {str(e)}')
+    
+    # Stay on the same page by rendering the see_marks template
+    context = {
+        'marks': queryset,
+        'total_marks': total_marks,
+        'student': student,
+        'current_rank': current_rank,
+        'date_of_report_card_generation': date_of_report_card_generation
+    }
+    return render(request, 'report/see_marks.html', context)
+
 
 @login_required(login_url='/login/')
 def Recipies(request):
@@ -135,8 +170,6 @@ def register_page(request):
 
     return render(request, 'register.html')
 
-
-from django.db.models import Q,Sum
 
 def get_student(request):
     queryset=Student.objects.all()  
