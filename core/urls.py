@@ -35,6 +35,9 @@ urlpatterns = [
     path('students/', get_student, name='get_students'),
     path('see_marks/<student_id>/', see_marks, name='see_marks'),
     path('send_email/', send_email, name='send_email'),
+    path('delete_all_students/', delete_all_students, name='delete_all_students'),
+    path('generate_fake_students/', generate_fake_students, name='generate_fake_students'),
+    path('delete_all_users/', delete_all_users, name='delete_all_users'),
 ]
 
 if settings.DEBUG:

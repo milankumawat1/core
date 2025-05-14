@@ -44,12 +44,13 @@ class Subject(models.Model):
 
 
 class Student(models.Model):
-    department=models.ForeignKey(Department,related_name='depart', on_delete=models.CASCADE)
-    student_id=models.OneToOneField(StudentID,related_name='studentid', on_delete=models.CASCADE)
+    department=models.ForeignKey(Department,related_name='depart',on_delete=models.SET_NULL,null=True)
+    student_id=models.OneToOneField(StudentID,related_name='studentid',on_delete=models.SET_NULL,null=True)
     student_name=models.CharField(max_length=100)
     student_email=models.EmailField(unique=True)
-    student_age=models.IntegerField(default=18)
+    student_age=models.IntegerField()
     student_address=models.TextField()
+    is_fake = models.BooleanField(default=False)
     is_deleted=models.BooleanField(default=False)
 
 
@@ -58,7 +59,7 @@ class Student(models.Model):
     objects=StudentManager()
     admin_objects=models.Manager()
     def __str__(self):
-        return self.student_name
+        return f"{self.student_name}"
     
 
     class Meta:
@@ -78,10 +79,11 @@ class SubjectMarks(models.Model):
 
 
 class ReportCard(models.Model):
-    student=models.ForeignKey(Student,related_name='studentreportcard', on_delete=models.CASCADE)
+    student=models.ForeignKey(Student,related_name='reportcard_set', on_delete=models.CASCADE)
     student_rank=models.IntegerField()
     date_of_report_card_generation=models.DateField(auto_now_add=True)
+    total_marks=models.IntegerField(default=0)
 
-    
     class Meta:
-        unique_together=['student_rank','date_of_report_card_generation']
+        unique_together=['student', 'date_of_report_card_generation']
+        ordering = ['-date_of_report_card_generation', 'student_rank']

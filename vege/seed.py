@@ -2,6 +2,7 @@ from faker import Faker
 import random
 from .models import *
 from django.db.models import Sum
+from datetime import datetime
 
 fake=Faker()
 
@@ -14,31 +15,28 @@ def create_subject_marks(n):
                 SubjectMarks.objects.create(
                     subject=subject,
                     student=student,
-                    
                     marks=random.randint(0,100)
                 )
     except Exception as e:
         print(e)
 
-
-
 def generate_report_card():
-    current_rank=-1
-    ranks=Student.objects.annotate(marks=Sum('studentmarks__marks')).order_by('-marks','-student_age')
-    i=1
-    for rank in ranks:
-        ReportCard.objects.create(
-            student=rank,
-            student_rank=i,
-        )
-        i+=1
-    
+    try:
+        # Delete existing report cards
+        ReportCard.objects.all().delete()
         
-
-
-
-
-
+        # Get all students with their total marks
+        ranks = Student.objects.annotate(marks=Sum('studentmarks__marks')).order_by('-marks', '-student_age')
+        
+        # Create new report cards
+        for i, rank in enumerate(ranks, 1):
+            ReportCard.objects.create(
+                student=rank,
+                student_rank=i,
+                date_of_report_card_generation=datetime.now().date()
+            )
+    except Exception as e:
+        print(f"Error generating report cards: {e}")
 
 def seed_db(n=10)->None:
     try:
@@ -60,7 +58,8 @@ def seed_db(n=10)->None:
                 student_name=student_name,
                 student_email=student_email,
                 student_age=student_age,
-                student_address=student_address
+                student_address=student_address,
+                is_fake=True  # Mark as fake record
             )
     except Exception as e:
         print(e)
